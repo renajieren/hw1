@@ -130,3 +130,90 @@
 
 -- The SQL statement for the cast output
 -- TODO!
+
+DROP TABLE IF EXISTS Roles;
+DROP TABLE IF EXISTS Actors;
+DROP TABLE IF EXISTS Movies;
+DROP TABLE IF EXISTS Studios;
+
+
+CREATE TABLE Studios (
+    studio_id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE Movies (
+    movie_id INTEGER PRIMARY KEY,
+    title TEXT,
+    year_released INTEGER,
+    MPAA_rating TEXT,
+    studio_id INTEGER
+);
+
+CREATE TABLE Actors (
+    actor_id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE Roles (
+    movie_id INTEGER,
+    actor_id INTEGER,
+    character_name TEXT
+);
+
+INSERT INTO Studios (studio_id, name) VALUES (1, 'Warner Bros.');
+
+INSERT INTO Movies (movie_id, title, year_released, MPAA_rating, studio_id) VALUES
+(1, 'Batman Begins', 2005, 'PG-13', 1),
+(2, 'The Dark Knight', 2008, 'PG-13', 1),
+(3, 'The Dark Knight Rises', 2012, 'PG-13', 1);
+
+INSERT INTO Actors (actor_id, name) VALUES 
+(1, 'Christian Bale'),
+(2, 'Michael Caine'),
+(3, 'Liam Neeson'),
+(4, 'Katie Holmes'),
+(5, 'Gary Oldman'),
+(6, 'Heath Ledger'),
+(7, 'Aaron Eckhart'),
+(8, 'Maggie Gyllenhaal'),
+(9, 'Tom Hardy'),
+(10, 'Joseph Gordon-Levitt'),
+(11, 'Anne Hathaway');
+
+INSERT INTO Roles (movie_id, actor_id, character_name) VALUES 
+(1, 1, 'Bruce Wayne'),
+(1, 2, 'Alfred'),
+(1, 4, 'Rachel Dawes'),
+(1, 5, 'Commissioner Gordon');
+
+INSERT INTO Roles (movie_id, actor_id, character_name) VALUES 
+(2, 1, 'Bruce Wayne'),
+(2, 6, 'Joker'),
+(2, 7, 'Harvey Dent'),
+(2, 2, 'Alfred'),
+(2, 8, 'Rachel Dawes');
+
+INSERT INTO Roles (movie_id, actor_id, character_name) VALUES 
+(3, 1, 'Bruce Wayne'),
+(3, 5, 'Commissioner Gordon'),
+(3, 9, 'Bane'),
+(3, 10, 'John Blake'),
+(3, 11, 'Selina Kyle');
+
+SELECT 
+    M.title, 
+    M.year_released, 
+    M.MPAA_rating, 
+    S.name AS studio_name
+FROM Movies M
+JOIN Studios S ON M.studio_id = S.studio_id;
+
+SELECT 
+    M.title, 
+    A.name AS actor_name, 
+    R.character_name
+FROM Roles R
+JOIN Movies M ON R.movie_id = M.movie_id
+JOIN Actors A ON R.actor_id = A.actor_id
+ORDER BY A.name, M.title;
